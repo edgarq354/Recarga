@@ -57,17 +57,19 @@ public class Servicio_recargar  extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
+
+            operador=Integer.parseInt(intent.getStringExtra("operador"));
+            numero=intent.getStringExtra("numero");
+            monto=intent.getStringExtra("monto");
+            codigo=intent.getStringExtra("codigo");
+            id_recarga=intent.getStringExtra("id_recarga");
+            empresa=intent.getStringExtra("empresa");
+
+
+            handleActionRun();
             if (Constants.ACTION_RUN_ISERVICE.equals(action)) {
 
-                operador=Integer.parseInt(intent.getStringExtra("operador"));
-                numero=intent.getStringExtra("numero");
-                monto=intent.getStringExtra("monto");
-                codigo=intent.getStringExtra("codigo");
-                id_recarga=intent.getStringExtra("id_recarga");
-                empresa=intent.getStringExtra("empresa");
 
-
-                handleActionRun();
             }
         }
     }
