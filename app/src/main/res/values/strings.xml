@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Recarga</string>
+    <string name="accessibility_description">USSD</string>
+    <string name="desc">ussd</string>
+
+
+    <string name="servidor_web">http://35.188.246.139/taxivalle/</string>
+    <string name="servidor">http://35.188.246.139/taxivalle2/</string>
+</resources>
