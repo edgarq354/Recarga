@@ -1,14 +1,13 @@
 package com.elisoft.recarga;
 
 import android.app.IntentService;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -19,7 +18,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,20 +32,22 @@ import java.util.Map;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class Servicio_recargar  extends IntentService {
+public class Servicio_recargar_actualizado extends IntentService {
     Suceso suceso;
     String numero="";
     String codigo="";
     String monto="";
     String id_recarga="";
     String empresa="";
+    String mensaje_empresa="";
+    String estado="";
     int operador=0;
-    private static final String TAG = Servicio_recargar.class.getSimpleName();
+    private static final String TAG = Servicio_recargar_actualizado.class.getSimpleName();
     RequestQueue queue=null;
 
 
 
-    public Servicio_recargar() {
+    public Servicio_recargar_actualizado() {
         super("Servicio_recargar");
     }
 
@@ -57,13 +57,14 @@ public class Servicio_recargar  extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-
-            operador=Integer.parseInt(intent.getStringExtra("operador"));
-            numero=intent.getStringExtra("numero");
-            monto=intent.getStringExtra("monto");
-            codigo=intent.getStringExtra("codigo");
+            //  operador=Integer.parseInt(intent.getStringExtra("operador"));
+         //   numero=intent.getStringExtra("numero");
+         //   monto=intent.getStringExtra("monto");
+         //   codigo=intent.getStringExtra("codigo");
             id_recarga=intent.getStringExtra("id_recarga");
-            empresa=intent.getStringExtra("empresa");
+         //   empresa=intent.getStringExtra("empresa");
+            mensaje_empresa=intent.getStringExtra("mensaje_mpresa");
+            estado=intent.getStringExtra("estado");
 
 
             handleActionRun();
@@ -80,36 +81,19 @@ public class Servicio_recargar  extends IntentService {
     private void handleActionRun() {
 
 
-
-        if(empresa.equals("TIGO"))
-        {
-           // operador=0;
-            String USSD = Uri.encode("*") + "555" + Uri.encode("#") +"3"+ Uri.encode("#") +"2"+ Uri.encode("#") +monto+Uri.encode("#")+numero+Uri.encode("#")+codigo+Uri.encode("#");
-            dailNumber(USSD);
-        }else if(empresa.equals("VIVA")){
-
-        }else if(empresa.equals("ENTEL")){
-           // operador=1;
-            String USSD = Uri.encode("*") + "133" + Uri.encode("*")+numero+Uri.encode("*")+monto+Uri.encode("*")+"1"+Uri.encode("#");
-            dailNumber(USSD);
-        }
-        //  Thread.sleep(1000);
-        // Quitar de primer plano
-        //  stopForeground(true);
-        // stopService(new Intent(this,Servicio_recargar.class));
-        // si nuestro estado esta en 2 o mayor .. quiere decir que no nuestro pedido se finalizo o sino se cancelo... sin nninguna carrera...
-
-
+        servicio_recarga_actualizar();
     }
 
-    private void servicio_monto_total_por_id_pedido(String sid_pedido2) {
+    private void servicio_recarga_actualizar() {
 
         try {
 
             JSONObject jsonParam= new JSONObject();
-            jsonParam.put("id_pedido", sid_pedido2);
+            jsonParam.put("id_recarga", id_recarga);
+            jsonParam.put("mensaje_empresa", id_recarga);
+            jsonParam.put("estado", estado);
 
-            String url=getString(R.string.servidor) + "frmPedido.php?opcion=monto_total_por_id_pedido";
+            String url=getString(R.string.servidor) + "frmRecarga.php?opcion=actualizar_recarga";
             if (queue == null) {
                 queue = Volley.newRequestQueue(this);
                 Log.e("volley","Setting a new request queue");
@@ -128,8 +112,6 @@ public class Servicio_recargar  extends IntentService {
 
                                 if (suceso.getSuceso().equals("1")) {
                                   //  monto_total=respuestaJSON.getString("monto_total");
-
-
                                 }
 
 
@@ -233,7 +215,6 @@ public class Servicio_recargar  extends IntentService {
         // callIntent.putExtra("com.android.phone.extra.slot", operador);
         callIntent.putExtra("simSlot", operador); //For sim 1
         callIntent.setData(Uri.parse("tel:" + USSD));
-        callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(callIntent);
     }
 }

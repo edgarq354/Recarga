@@ -27,10 +27,21 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Recarga">
+        android:theme="@style/Theme.Recarga"
+        android:usesCleartextTraffic="true"
+        >
+
+        <activity
+            android:name=".Lista_Recargas"
+            android:label="@string/title_activity_lista__recargas"
+            android:theme="@style/Theme.Recarga.NoActionBar"></activity>
+
         <service
             android:name=".Servicio_recargar"
-            android:exported="false"></service>
+            android:exported="false" />
+        <service
+            android:name=".Servicio_recargar_actualizado"
+            android:exported="false" />
 
         <activity android:name=".MainActivity">
             <intent-filter>

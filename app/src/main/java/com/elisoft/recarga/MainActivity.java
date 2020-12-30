@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     private final static int MY_PERMISSIONS_REQUEST_CALL_PHONE = 123;
     private TelephonyManager telephonyManager;
 
-    Button bt_guardar;
+    Button bt_guardar,bt_recargas;
 
     String tigo="";
     String viva="";
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         et_codigo=findViewById(R.id.et_codigo);
         et_monto=findViewById(R.id.et_monto);
         bt_guardar=findViewById(R.id.bt_guardar);
+        bt_recargas=findViewById(R.id.bt_recargas);
 
         rb_tigo=findViewById(R.id.rb_tigo);
         rb_viva=findViewById(R.id.rb_viva);
@@ -56,6 +58,12 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
         bt_guardar.setOnClickListener(this);
+        bt_recargas.setOnClickListener(this);
+
+        verificar_todos_los_permisos();
+
+        SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
+        et_codigo.setText(prefe.getString("codigo_tigo",""));
 
     }
 
@@ -95,6 +103,10 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     //Detecta si los permisos fueron concedidos (android 6.0+)
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
+        int per=0;
+
+
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CALL_PHONE : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -103,8 +115,38 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                     Toast.makeText(getApplicationContext(), "No se tienen permisos CALL_PHONE!", Toast.LENGTH_LONG).show();
                 }
                 return;
+
+
+            }
+
+            case 1: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 ) {
+                    for (int i=0;i<grantResults.length;i++){
+                        if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                            per++;
+                        }
+                    }
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    finish();
+                }
+
+                if(per<grantResults.length){
+                    finish();
+                }else
+                {
+
+                }
+                return;
             }
         }
+
+
     }
     private void dailNumber(String USSD) {
         //startActivity(new Intent("android.intent.action.CALL", Uri.parse("tel:" + USSD)));
@@ -187,8 +229,27 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.bt_guardar:
+               recargar_crerdito();
+
+                break;
+            case R.id.bt_recargas:
+                startActivity(new Intent(this,Lista_Recargas.class));
+                break;
+        }
+
+
+    }
+
+    private void recargar_crerdito() {
         if(rb_tigo.isChecked())
         {
+            SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor=prefe.edit();
+            editor.putString("codigo_tigo",et_codigo.getText().toString().trim());
+            editor.commit();
+
             startService(new Intent(this, XXXX.class));
             Intent servicio_recarga=new Intent(this, Servicio_recargar.class);
             servicio_recarga.putExtra("operador","0");
@@ -230,6 +291,37 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             requestUSSD(USSD);
             */
         }
+    }
+
+
+    public void verificar_todos_los_permisos()
+    {
+
+        String[] SMS_PERMISSIONS1 = {
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.CALL_PHONE };
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            SMS_PERMISSIONS1 = new String[]{
+                    Manifest.permission.INTERNET,
+                    Manifest.permission.ACCESS_NETWORK_STATE,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.CALL_PHONE };
+        }
+
+
+
+        ActivityCompat.requestPermissions(MainActivity.this,
+                SMS_PERMISSIONS1,
+                1);
+
 
     }
+
+
+
+
 }

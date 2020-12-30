@@ -2,7 +2,9 @@ package com.elisoft.recarga;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
@@ -23,12 +25,21 @@ public class XXXX extends AccessibilityService {
         if (event.getClassName().equals("android.app.AlertDialog")) {
             performGlobalAction(GLOBAL_ACTION_BACK);
 
-            Log.d(TAG, text);
+            Log.e(TAG, text);
             Intent intent = new Intent("com.times.ussd.action.REFRESH");
             intent.putExtra("message", text);
             Toast.makeText(this,text,Toast.LENGTH_LONG).show();
             //Globals.setTEXT(text);
 
+            SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
+
+
+            Intent servicio_recarga=new Intent(this, Servicio_recargar_actualizado.class);
+            servicio_recarga.putExtra("id_recarga",prefe.getString("id_recarga",""));
+            servicio_recarga.putExtra("mensaje_empresa",text);
+            servicio_recarga.putExtra("estado","RECARGADO");
+            servicio_recarga.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startService(servicio_recarga);
         }
 
     }

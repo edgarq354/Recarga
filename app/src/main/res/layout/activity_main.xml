@@ -116,8 +116,17 @@
         android:id="@+id/bt_guardar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guardar"
+        android:text="Enviar"
         android:layout_marginTop="30sp"
+        tools:layout_editor_absoluteX="156dp"
+        tools:layout_editor_absoluteY="390dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/bt_recargas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lista de recargas"
         tools:layout_editor_absoluteX="156dp"
         tools:layout_editor_absoluteY="390dp"
         tools:ignore="MissingConstraints" />
