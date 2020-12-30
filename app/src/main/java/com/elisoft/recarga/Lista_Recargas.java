@@ -243,10 +243,17 @@ public class Lista_Recargas extends AppCompatActivity {
 
                                 if(recargar_ultimo!=null)
                                 {
+                                    Intent servicio_recarga=new Intent(Lista_Recargas.this, Servicio_recargar_actualizado.class);
+                                    servicio_recarga.putExtra("id_recarga",String.valueOf(recargar_ultimo.getId()));
+                                    servicio_recarga.putExtra("mensaje_empresa","");
+                                    servicio_recarga.putExtra("estado","PROCESO");
+                                    servicio_recarga.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startService(servicio_recarga);
+
                                     recargar_credito(recargar_ultimo);
                                     SystemClock.sleep(20000);
                                 }else{
-                                    SystemClock.sleep(5000);
+                                    SystemClock.sleep(20000);
                                 }
                                 servicio_volley_lista();
                             } catch (JSONException e) {
