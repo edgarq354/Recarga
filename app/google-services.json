@@ -1,0 +1,220 @@
+{
+  "project_info": {
+    "project_number": "865463379801",
+    "firebase_url": "https://taxi-valle-grande.firebaseio.com",
+    "project_id": "taxi-valle-grande",
+    "storage_bucket": "taxi-valle-grande.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865463379801:android:6de125b3c5961e02",
+        "android_client_info": {
+          "package_name": "com.elisoft.gougo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865463379801-2lhf0mmbkvske4863ircius2pbkf29nu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.gougo",
+            "certificate_hash": "0a66e6f46d3ea25ba8293f69ad98b85da8d5cebf"
+          }
+        },
+        {
+          "client_id": "865463379801-fnt8gmpsqa49eqdpemmhqmd72fcke992.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.gougo",
+            "certificate_hash": "2809813bf2cf855ce217c8fbb348eae3681d0508"
+          }
+        },
+        {
+          "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM8ATqHvLD_0Rqi3zLsh8UfLupHSG8RIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865463379801:android:1ad2300198e79fe9ff8e48",
+        "android_client_info": {
+          "package_name": "com.elisoft.recarga"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM8ATqHvLD_0Rqi3zLsh8UfLupHSG8RIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865463379801:android:88d19bd39331d898ff8e48",
+        "android_client_info": {
+          "package_name": "com.elisoft.traigo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865463379801-ij814mcnd4n4m4tslkdnde9conkf21ta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.traigo",
+            "certificate_hash": "a6a4afc4443c2ceb45c08c01c46ddc9a8e04129f"
+          }
+        },
+        {
+          "client_id": "865463379801-vab70q0gk5kuvs7buhp1ha7e0qbujsua.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.traigo",
+            "certificate_hash": "2809813bf2cf855ce217c8fbb348eae3681d0508"
+          }
+        },
+        {
+          "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM8ATqHvLD_0Rqi3zLsh8UfLupHSG8RIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865463379801:android:10adf20b4abc21ad",
+        "android_client_info": {
+          "package_name": "com.elisoft.valle_grande"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865463379801-0lp10u5t5h7f1ke6mo55tmdn1fkk834s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.valle_grande",
+            "certificate_hash": "566e4fcbc22979ed713f5796afbb06cec2f3028b"
+          }
+        },
+        {
+          "client_id": "865463379801-nr0oia7luhd7l9sruf8510p5mpphl9ll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.valle_grande",
+            "certificate_hash": "99c08743a4f9120c71ab23f35a17a4cf7f0da0e4"
+          }
+        },
+        {
+          "client_id": "865463379801-tlr9l4jdu6mc1c0u293qed4nrqerm5mk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.valle_grande",
+            "certificate_hash": "3240fa142d440af08e0928f973a3852bf196ccc8"
+          }
+        },
+        {
+          "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM8ATqHvLD_0Rqi3zLsh8UfLupHSG8RIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:865463379801:android:b9cccf2508137723",
+        "android_client_info": {
+          "package_name": "com.elisoft.valle_grande_conductor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "865463379801-c1gv4htt4idf2fv1sr3un200bsdplfkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.elisoft.valle_grande_conductor",
+            "certificate_hash": "3240fa142d440af08e0928f973a3852bf196ccc8"
+          }
+        },
+        {
+          "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBM8ATqHvLD_0Rqi3zLsh8UfLupHSG8RIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "865463379801-jl3tn94lsjhj268rcd5na7vihuqbkk1k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
