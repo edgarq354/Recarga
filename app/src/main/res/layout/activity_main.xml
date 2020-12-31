@@ -112,6 +112,19 @@
 
     </RadioGroup>
 
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Token"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/et_token"
+        />
+
     <Button
         android:id="@+id/bt_guardar"
         android:layout_width="match_parent"

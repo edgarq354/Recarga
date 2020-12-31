@@ -1,5 +1,7 @@
 package com.elisoft.recarga;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -23,8 +25,16 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.elisoft.recarga.notificaciones.SharedPrefManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
-    EditText et_telefono,et_codigo,et_monto;
+    EditText et_telefono,et_codigo,et_monto,et_token;
     private final static int MY_PERMISSIONS_REQUEST_CALL_PHONE = 123;
     private TelephonyManager telephonyManager;
 
@@ -47,6 +57,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         et_telefono=findViewById(R.id.et_telefono);
         et_codigo=findViewById(R.id.et_codigo);
         et_monto=findViewById(R.id.et_monto);
+        et_token=findViewById(R.id.et_token);
         bt_guardar=findViewById(R.id.bt_guardar);
         bt_recargas=findViewById(R.id.bt_recargas);
 
@@ -60,14 +71,53 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         bt_guardar.setOnClickListener(this);
         bt_recargas.setOnClickListener(this);
 
-        verificar_todos_los_permisos();
 
-        SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
-        et_codigo.setText(prefe.getString("codigo_tigo",""));
+
+
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("Firebase token", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // guardaremos el token en las preferencias compartidas más tarde
+                        SharedPrefManager.getInstance(getApplicationContext()).saveDeviceToken(token);
+                        SharedPrefManager.getInstance(getApplicationContext()).guardarToken();
+
+
+                        if (token != null || token == "") {
+                            et_token.setText(token);
+
+                        } else {
+                            mensaje_error("No se a podido generar el Token. porfavor active sus datos de Red e instale Google Pay Service");
+                        }
+
+                    }
+                });
+
+
+
 
     }
 
 
+
+    public void mensaje_error(String mensaje)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Importante");
+        builder.setMessage(mensaje);
+        builder.setPositiveButton("OK", null);
+        builder.create();
+        builder.show();
+    }
 
 /*
 
@@ -103,10 +153,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     //Detecta si los permisos fueron concedidos (android 6.0+)
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-
-        int per=0;
-
-
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CALL_PHONE : {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -115,38 +161,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                     Toast.makeText(getApplicationContext(), "No se tienen permisos CALL_PHONE!", Toast.LENGTH_LONG).show();
                 }
                 return;
-
-
-            }
-
-            case 1: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 ) {
-                    for (int i=0;i<grantResults.length;i++){
-                        if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
-                            per++;
-                        }
-                    }
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    finish();
-                }
-
-                if(per<grantResults.length){
-                    finish();
-                }else
-                {
-
-                }
-                return;
             }
         }
-
-
     }
     private void dailNumber(String USSD) {
         //startActivity(new Intent("android.intent.action.CALL", Uri.parse("tel:" + USSD)));
@@ -231,34 +247,22 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bt_guardar:
-               recargar_crerdito();
+                SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor=prefe.edit();
+                editor.putString("codigo_tigo",et_codigo.getText().toString().trim());
+                editor.commit();
 
-                break;
-            case R.id.bt_recargas:
-                startActivity(new Intent(this,Lista_Recargas.class));
-                break;
-        }
-
-
-    }
-
-    private void recargar_crerdito() {
-        if(rb_tigo.isChecked())
-        {
-            SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor=prefe.edit();
-            editor.putString("codigo_tigo",et_codigo.getText().toString().trim());
-            editor.commit();
-
-            startService(new Intent(this, XXXX.class));
-            Intent servicio_recarga=new Intent(this, Servicio_recargar.class);
-            servicio_recarga.putExtra("operador","0");
-            servicio_recarga.putExtra("numero",et_telefono.getText().toString().trim());
-            servicio_recarga.putExtra("monto",et_monto.getText().toString().trim());
-            servicio_recarga.putExtra("codigo",et_codigo.getText().toString().trim());
-            servicio_recarga.putExtra("id_recarga","0");
-            servicio_recarga.putExtra("empresa","TIGO");
-            startService(servicio_recarga);
+                if(rb_tigo.isChecked())
+                {
+                    startService(new Intent(this, XXXX.class));
+                    Intent servicio_recarga=new Intent(this, Servicio_recargar.class);
+                    servicio_recarga.putExtra("operador","0");
+                    servicio_recarga.putExtra("numero",et_telefono.getText().toString().trim());
+                    servicio_recarga.putExtra("monto",et_monto.getText().toString().trim());
+                    servicio_recarga.putExtra("codigo",et_codigo.getText().toString().trim());
+                    servicio_recarga.putExtra("id_recarga","0");
+                    servicio_recarga.putExtra("empresa","TIGO");
+                    startService(servicio_recarga);
 /*
             operador=Integer.parseInt(intent.getStringExtra("operador"));
             numero=intent.getStringExtra("numero");
@@ -271,57 +275,38 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             String USSD = Uri.encode("*") + "555" + Uri.encode("#") +"3"+ Uri.encode("#") +"2"+ Uri.encode("#") +et_monto.getText().toString().trim()+Uri.encode("#")+et_telefono.getText().toString().trim()+Uri.encode("#")+et_codigo.getText().toString().trim()+Uri.encode("#");
             requestUSSD(USSD);
             */
-        }else if(rb_viva.isChecked()){
+                }else if(rb_viva.isChecked()){
 
-        }else if(rb_entel.isChecked()){
+                }else if(rb_entel.isChecked()){
 
-            startService(new Intent(this, XXXX.class));
-            Intent servicio_recarga=new Intent(this, Servicio_recargar.class);
-            servicio_recarga.putExtra("operador","1");
-            servicio_recarga.putExtra("numero",et_telefono.getText().toString().trim());
-            servicio_recarga.putExtra("monto",et_monto.getText().toString().trim());
-            servicio_recarga.putExtra("codigo",et_codigo.getText().toString().trim());
-            servicio_recarga.putExtra("id_recarga","0");
-            servicio_recarga.putExtra("empresa","ENTEL");
-            startService(servicio_recarga);
+                    startService(new Intent(this, XXXX.class));
+                    Intent servicio_recarga=new Intent(this, Servicio_recargar.class);
+                    servicio_recarga.putExtra("operador","1");
+                    servicio_recarga.putExtra("numero",et_telefono.getText().toString().trim());
+                    servicio_recarga.putExtra("monto",et_monto.getText().toString().trim());
+                    servicio_recarga.putExtra("codigo",et_codigo.getText().toString().trim());
+                    servicio_recarga.putExtra("id_recarga","0");
+                    servicio_recarga.putExtra("empresa","ENTEL");
+                    startService(servicio_recarga);
 
             /*
             operador=1;
             String USSD = Uri.encode("*") + "133" + Uri.encode("*")+et_telefono.getText().toString().trim()+Uri.encode("*")+et_monto.getText().toString().trim()+Uri.encode("*")+"1"+Uri.encode("#");
             requestUSSD(USSD);
             */
-        }
-    }
+                }
 
 
-    public void verificar_todos_los_permisos()
-    {
-
-        String[] SMS_PERMISSIONS1 = {
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.CALL_PHONE };
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            SMS_PERMISSIONS1 = new String[]{
-                    Manifest.permission.INTERNET,
-                    Manifest.permission.ACCESS_NETWORK_STATE,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.CALL_PHONE };
+
+
+
+                break;
+            case R.id.bt_recargas:
+                startActivity(new Intent(this, Lista_Recargas.class));
+                break;
         }
 
-
-
-        ActivityCompat.requestPermissions(MainActivity.this,
-                SMS_PERMISSIONS1,
-                1);
-
-
     }
-
-
-
-
 }
