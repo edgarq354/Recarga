@@ -63,7 +63,7 @@ public class Servicio_recargar_actualizado extends IntentService {
          //   codigo=intent.getStringExtra("codigo");
             id_recarga=intent.getStringExtra("id_recarga");
          //   empresa=intent.getStringExtra("empresa");
-            mensaje_empresa=intent.getStringExtra("mensaje_mpresa");
+            mensaje_empresa=intent.getStringExtra("mensaje_empresa");
             estado=intent.getStringExtra("estado");
 
 
@@ -90,7 +90,7 @@ public class Servicio_recargar_actualizado extends IntentService {
 
             JSONObject jsonParam= new JSONObject();
             jsonParam.put("id_recarga", id_recarga);
-            jsonParam.put("mensaje_empresa", id_recarga);
+            jsonParam.put("mensaje_empresa", mensaje_empresa);
             jsonParam.put("estado", estado);
 
             String url=getString(R.string.servidor) + "frmRecarga.php?opcion=actualizar_recarga";
@@ -157,14 +157,7 @@ public class Servicio_recargar_actualizado extends IntentService {
 
 
 
-        SharedPreferences pedido=getSharedPreferences("ultimo_pedido",MODE_PRIVATE);
-        SharedPreferences.Editor edit=pedido.edit();
-        edit.putString("id_pedido","");
-        edit.commit();
 
-        if (queue != null) {
-            queue.stop();
-        }
 
 
 

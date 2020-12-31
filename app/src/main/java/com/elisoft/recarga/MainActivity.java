@@ -7,9 +7,11 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +50,9 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     RadioButton rb_tigo;
     RadioButton rb_viva;
     RadioButton rb_entel;
+    private int requestCode;
+    private String[] permissions;
+    private int[] grantResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,45 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                 });
 
 
+        SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
+        et_codigo.setText(prefe.getString("codigo_tigo",""));
+
+
+
+        //VERIFICAR PERMISO DE LLAMADA
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            final String[] CAMERA_PERMISSIONS = { Manifest.permission.INTERNET,
+                    Manifest.permission.CALL_PHONE };
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                //YA LO CANCELE Y VOUELVO A PERDIR EL PERMISO.
+
+                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+                dialogo1.setTitle("Atención!");
+                dialogo1.setMessage("Debes otorgar permisos de acceso a llamada.");
+                dialogo1.setCancelable(false);
+                dialogo1.setPositiveButton("Solicitar permiso", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogo1, int id) {
+                        dialogo1.cancel();
+                        ActivityCompat.requestPermissions(MainActivity.this,
+                                CAMERA_PERMISSIONS,
+                                MY_PERMISSIONS_REQUEST_CALL_PHONE);
+
+                    }
+                });
+                dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialogo1, int id) {
+                        dialogo1.cancel();
+
+                    }
+                });
+                dialogo1.show();
+            } else {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        CAMERA_PERMISSIONS,
+                        MY_PERMISSIONS_REQUEST_CALL_PHONE);
+            }
+        }
 
 
     }
@@ -245,6 +289,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+
+
         switch (v.getId()){
             case R.id.bt_guardar:
                 SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
@@ -309,4 +355,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         }
 
     }
+
+
+
+
 }
