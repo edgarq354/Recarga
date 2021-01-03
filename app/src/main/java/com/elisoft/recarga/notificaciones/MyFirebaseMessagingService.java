@@ -10,6 +10,7 @@ import android.os.Vibrator;
 import android.util.Log;
 
 
+import com.elisoft.recarga.MainActivity;
 import com.elisoft.recarga.Servicio_recargar;
 import com.elisoft.recarga.XXXX;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -59,6 +60,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // análisis de datos json
             id_recarga= data.getString("id_recarga");
 
+            String title = data.getString("title");
+            String message = data.getString("message");
+
             String numero = data.getString("numero");
             String monto = data.getString("monto");
             String empresa = data.getString("empresa");
@@ -101,6 +105,7 @@ switch (tipo)
         String codigo_tigo=prefe.getString("codigo_tigo","");
 
         String ci=prefe.getString("id_recarga", "");
+
         if(empresa.equals("TIGO"))
         {
             startService(new Intent(this, XXXX.class));
@@ -145,7 +150,8 @@ switch (tipo)
             */
         }
 
-
+        Intent usuario = new Intent(getApplicationContext(), MainActivity.class);
+        mNotificationManager.notificacion_con_activity(title, message, usuario);
 
         break;
 

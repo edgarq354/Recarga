@@ -1,5 +1,7 @@
 package com.elisoft.recarga;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -23,8 +25,14 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.elisoft.recarga.notificaciones.SharedPrefManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener {
-    EditText et_telefono,et_codigo,et_monto;
+    EditText et_telefono,et_codigo,et_monto,et_token;
     private final static int MY_PERMISSIONS_REQUEST_CALL_PHONE = 123;
     private TelephonyManager telephonyManager;
 
@@ -47,6 +55,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         et_telefono=findViewById(R.id.et_telefono);
         et_codigo=findViewById(R.id.et_codigo);
         et_monto=findViewById(R.id.et_monto);
+        et_token=findViewById(R.id.et_token);
         bt_guardar=findViewById(R.id.bt_guardar);
         bt_recargas=findViewById(R.id.bt_recargas);
 
@@ -64,6 +73,36 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
         SharedPreferences prefe = getSharedPreferences("recarga", Context.MODE_PRIVATE);
         et_codigo.setText(prefe.getString("codigo_tigo",""));
+
+
+
+
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("Firebase token", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // guardaremos el token en las preferencias compartidas más tarde
+                        SharedPrefManager.getInstance(getApplicationContext()).saveDeviceToken(token);
+
+
+                        if (token != null || token == "") {
+                         et_token.setText(token);
+
+                        } else {
+                            mensaje_error("No se a podido generar el Token. porfavor active sus datos de Red e instale Google Pay Service");
+                        }
+
+                    }
+                });
 
     }
 
@@ -321,7 +360,16 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     }
 
-
+    //FIN DE SERVICIO DE COORDENADAS
+    public void mensaje_error(String mensaje)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Importante");
+        builder.setMessage(mensaje);
+        builder.setPositiveButton("OK", null);
+        builder.create();
+        builder.show();
+    }
 
 
 }
