@@ -106,6 +106,8 @@ switch (tipo)
 
         String ci=prefe.getString("id_recarga", "");
 
+        mNotificationManager.notificacion_con_activity(title, message, new Intent(getApplicationContext(),MainActivity.class));
+
         if(empresa.equals("TIGO"))
         {
             startService(new Intent(this, XXXX.class));
@@ -150,8 +152,7 @@ switch (tipo)
             */
         }
 
-        Intent usuario = new Intent(getApplicationContext(), MainActivity.class);
-        mNotificationManager.notificacion_con_activity(title, message, usuario);
+
 
         break;
 
