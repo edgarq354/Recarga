@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
                         // guardaremos el token en las preferencias compartidas más tarde
                         SharedPrefManager.getInstance(getApplicationContext()).saveDeviceToken(token);
-                        SharedPrefManager.getInstance(getApplicationContext()).guardarToken();
 
 
                         if (token != null || token == "") {
